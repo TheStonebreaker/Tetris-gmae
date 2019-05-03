@@ -20,15 +20,18 @@ public:
 		
 		void DrawScreen();
 		void CreateNewPiece();
+		void ReversePauseFlag();
+		bool CheckPauseFlag();
 		
 		int mPosX, mPosY;
 		int mPiece, mRotation;
 		
 private:
 
-	int mScreenHeight;
-	int mNextPosX, mNextPosY;
-	int mNextPiece, mNextRotation;
+	int 		mScreenHeight;
+	int 		mNextPosX, mNextPosY;
+	int 		mNextPiece, mNextRotation;
+	bool	mPauseFlag;
 	
 	Board *mBoard;
 	Pieces *mPieces;

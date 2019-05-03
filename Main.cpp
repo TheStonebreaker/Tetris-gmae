@@ -17,28 +17,47 @@ int main()
 	{
 		mIO.ClearScreen();
 		mGame.DrawScreen();
+		if(mGame.CheckPauseFlag())
+			mIO.DrawPause();
+		
 		mIO.UpdateScreen();
 		
 		int mKey = mIO.Pollkey();
 		
 		switch(mKey)
 		{
+			case (SDLK_SPACE):
+				mGame.ReversePauseFlag();
+				break;
+			
 			case (SDLK_RIGHT):
+				if(mGame.CheckPauseFlag())
+					break;
+			
 				if (mBoard.IsPossibleMovement (mGame.mPosX + 1, mGame.mPosY, mGame.mPiece, mGame.mRotation))
 					mGame.mPosX++;				
 				break;
 				
 			case (SDLK_LEFT):
+				if(mGame.CheckPauseFlag())
+					break;			
+			
 				if (mBoard.IsPossibleMovement (mGame.mPosX -1, mGame.mPosY, mGame.mPiece, mGame.mRotation))
 					mGame.mPosX--;				
 				break;
 
 			case (SDLK_DOWN):
+				if(mGame.CheckPauseFlag())
+					break;			
+			
 				if (mBoard.IsPossibleMovement (mGame.mPosX , mGame.mPosY + 1, mGame.mPiece, mGame.mRotation))
 					mGame.mPosY++;				
 				break;
 
 			case (SDLK_x):
+				if(mGame.CheckPauseFlag())
+					break;			
+			
 				// Check collision from up to down
 				while (mBoard.IsPossibleMovement(mGame.mPosX, mGame.mPosY, mGame.mPiece, mGame.mRotation)) { mGame.mPosY++; }
 			 
@@ -56,9 +75,17 @@ int main()
 			break;
 			
 			case (SDLK_z):
+				if(mGame.CheckPauseFlag())
+					break;			
+			
 				if (mBoard.IsPossibleMovement (mGame.mPosX, mGame.mPosY, mGame.mPiece, (mGame.mRotation + 1) % 4))
 							mGame.mRotation = (mGame.mRotation + 1) % 4;
 			break;				
+		}
+		
+		if(mGame.CheckPauseFlag())
+		{
+			continue;
 		}
 		
 		unsigned long mTime2 = SDL_GetTicks();

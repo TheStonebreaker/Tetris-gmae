@@ -13,6 +13,7 @@ Game::Game(Board *pBoard, Pieces *pPieces, IO *pIO, int pScreenHeight)
 	mBoard = pBoard;
 	mPieces = pPieces;
 	mIO = pIO;
+	mPauseFlag = false;
 
 	// Game initialization
 	InitGame ();
@@ -153,4 +154,26 @@ void Game::DrawScreen ()
     DrawBoard ();
     DrawPiece (mPosX, mPosY, mPiece, mRotation);
     DrawPiece (mNextPosX, mNextPosY, mNextPiece, mNextRotation);
+}
+
+/* 
+======================================                                  
+Reverse pause flag
+ 
+====================================== 
+*/
+void Game::ReversePauseFlag()
+{
+	mPauseFlag = !mPauseFlag;
+}
+
+/* 
+======================================                                  
+Check pause flag
+
+====================================== 
+*/
+bool Game::CheckPauseFlag()
+{
+	return mPauseFlag;
 }

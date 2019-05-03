@@ -2,7 +2,8 @@
 
 #include "IO.h"
 
-static SDL_Surface *mScreen;										// Screen
+static SDL_Surface *mScreen = NULL;															// Screen
+static SDL_Surface *mPause = NULL;
 static Uint32 mColors [COLOR_MAX] = {0x000000ff,					// Colors
                                0xff0000ff, 0x00ff00ff, 0x0000ffff,
                                0x00ffffff, 0xff00ffff, 0xffff00ff,
@@ -18,6 +19,16 @@ IO::IO()
 	InitGraph ();
 }
 
+/* 
+======================================									
+Deinit
+====================================== 
+*/
+IO::~IO()
+{
+	if( mPause != NULL)
+		SDL_FreeSurface( mPause );
+}
 
 /* 
 ======================================									
@@ -119,6 +130,59 @@ int IO::IsKeyDown (int pKey)
 	SDL_PumpEvents();
 	mKeytable = SDL_GetKeyState(&mNumkeys);
 	return mKeytable[pKey];
+}
+
+/* 
+======================================									
+load image
+====================================== 
+*/
+SDL_Surface *IO::loadImage(std::string fileName)
+{
+	SDL_Surface *loadImage = NULL;
+	SDL_Surface *optimizedImage = NULL;
+	
+    loadImage = SDL_LoadBMP(fileName.c_str());
+        
+    if(loadImage != NULL)
+    {
+        optimizedImage = SDL_DisplayFormat(loadImage);
+
+        SDL_FreeSurface(loadImage);
+    }   
+
+	return optimizedImage;
+}
+
+/* 
+======================================									
+apply surface
+====================================== 
+*/
+void IO::ApplySurface(int x, int y, SDL_Surface *source, SDL_Surface *destination)
+{
+    SDL_Rect offset;
+
+    offset.x = x;
+    offset.y = y;
+
+    SDL_BlitSurface(source, NULL, destination, &offset);	
+}
+
+/* 
+======================================									
+draw pause
+====================================== 
+*/
+void IO::DrawPause()
+{
+	if( mPause == NULL )
+		mPause = loadImage("Image/pause.bmp");
+
+	if( mPause != NULL)
+	{
+		ApplySurface(160, 120, mPause, mScreen);	
+	}
 }
 
 /* 

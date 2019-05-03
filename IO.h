@@ -3,6 +3,7 @@
 
 #include <SDL/SDL.h>                                  
 #include "SDL/SDL_GfxPrimitives/sdl_gfxprimitives.h" 
+#include <string>
 
 #pragma commit (lib, "SDL/LIB/SDL.lib")
 #pragma commit (lib, "SDL/SDL_GfxPrimitives/SDL_GfxPrimitives_Static.lib")
@@ -17,6 +18,7 @@ class IO
 public:
 
 	IO();
+	~IO();
 	
 	void DrawRectangle(int pX1, int pY1, int pX2, int pY2, enum color pC);
 	void ClearScreen();
@@ -26,7 +28,11 @@ public:
 	int Getkey();
 	int IsKeyDown(int pKey);
 	void UpdateScreen();
+	void DrawPause();
 	
+private:
+	SDL_Surface *loadImage(std::string fileName);
+	void ApplySurface(int x, int y, SDL_Surface *source, SDL_Surface *destination);
 };
 
 #endif
